@@ -20,17 +20,18 @@
   --text-secondary: #64748b;
   --border-color: rgba(99, 102, 241, 0.2);
   --card-bg: #1e293b;
+
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-duration: 0.3s;
 }
 
-[data-theme="light"] {
-  --bg-main: #ffffff;
-  --bg-secondary: #f8fafc;
-  --card-bg: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --border-color: rgba(99, 102, 241, 0.15);
-  --dark: #0f172a;
-  --dark-light: #ffffff;
+/* Обновите переходы везде */
+* {
+  transition: color var(--transition-duration) var(--transition-smooth),
+    background-color var(--transition-duration) var(--transition-smooth),
+    border-color var(--transition-duration) var(--transition-smooth),
+    transform var(--transition-duration) var(--transition-smooth),
+    opacity var(--transition-duration) var(--transition-smooth);
 }
 
 body {
@@ -68,14 +69,6 @@ body {
   background-size: 50px 50px;
   animation: moveBackground 20s linear infinite;
   opacity: 1;
-}
-
-[data-theme="light"] .bg-animation::before {
-  background: radial-gradient(
-    circle,
-    rgba(99, 102, 241, 0.08) 1px,
-    transparent 1px
-  );
 }
 
 /* Floating particles */
@@ -151,10 +144,6 @@ nav {
   z-index: 1000;
   transition: all 0.3s ease;
   border-bottom: 1px solid var(--border-color);
-}
-
-[data-theme="light"] nav {
-  background: rgba(255, 255, 255, 0.95);
 }
 
 nav.scrolled {
@@ -287,24 +276,113 @@ nav.scrolled {
   font-size: 10px;
 }
 
-[data-theme="light"] .theme-toggle-slider {
-  transform: translateX(24px);
-}
-
 /* Mobile Menu */
+/* ========== ИСПРАВЛЕННОЕ МЕНЮ ========== */
 .mobile-menu-btn {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  z-index: 1001;
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 0;
 }
 
 .mobile-menu-btn span {
-  width: 25px;
+  position: absolute;
+  width: 100%;
   height: 3px;
   background: var(--text-primary);
+  border-radius: 3px;
   transition: all 0.3s ease;
+}
+
+.mobile-menu-btn span:nth-child(1) {
+  top: 20%;
+}
+
+.mobile-menu-btn span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mobile-menu-btn span:nth-child(3) {
+  bottom: 20%;
+}
+
+/* Анимация при открытии */
+.mobile-menu-btn.active span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  background: var(--primary);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+  background: var(--primary);
+}
+
+/* Затемнение фона при открытом меню */
+.nav-links::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.nav-links.active::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Плавная анимация для пунктов меню */
+.nav-links li {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+}
+
+.nav-links.active li {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-links.active li:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.nav-links.active li:nth-child(2) {
+  transition-delay: 0.15s;
+}
+.nav-links.active li:nth-child(3) {
+  transition-delay: 0.2s;
+}
+.nav-links.active li:nth-child(4) {
+  transition-delay: 0.25s;
+}
+.nav-links.active li:nth-child(5) {
+  transition-delay: 0.3s;
+}
+.nav-links.active li:nth-child(6) {
+  transition-delay: 0.35s;
+}
+.nav-links.active li:nth-child(7) {
+  transition-delay: 0.4s;
+}
+.nav-links.active li:nth-child(8) {
+  transition-delay: 0.45s;
 }
 
 /* Hero Section - Fixed z-index */
@@ -777,6 +855,139 @@ section {
   box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
 }
 
+/* Services Section */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+
+.service-card {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 102, 241, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.service-card:hover::before {
+  left: 100%;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--primary);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.3);
+}
+
+.service-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.service-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+
+.service-card p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.service-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-tag {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  transition: all 0.3s ease;
+}
+
+.feature-tag:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+/* Светлая тема для Services */
+[data-theme="light"] .service-card {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .service-card:hover {
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15);
+}
+
+[data-theme="light"] .service-card h3 {
+  color: #0f172a;
+}
+
+[data-theme="light"] .service-card p {
+  color: #475569;
+}
+
+[data-theme="light"] .feature-tag {
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* Адаптивность */
+@media (max-width: 968px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Projects Section */
 .projects-grid {
   display: grid;
@@ -913,6 +1124,259 @@ section {
 .project-link:hover {
   color: var(--accent);
   transform: translateX(5px);
+}
+
+/* Project Image - для настоящих картинок */
+.project-image img {
+  width: 96%;
+  height: 95%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  border-radius: 15px;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.1);
+}
+
+/* Иконка "View" при наведении */
+.project-image::before {
+  content: "👁️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 3rem;
+  z-index: 2;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.project-card:hover .project-image::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* Убираем иконку для проектов с эмодзи (без img) */
+.project-image:not(:has(img))::before {
+  content: none;
+}
+
+/* Бейдж "В разработке" */
+.dev-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+  }
+}
+
+/* Адаптивность */
+/* ========== УЛУЧШЕННАЯ МОБИЛЬНАЯ ВЕРСИЯ ========== */
+@media (max-width: 768px) {
+  /* Герой секция */
+  .hero {
+    padding-top: 120px;
+    min-height: auto;
+  }
+
+  .hero-content {
+    gap: 2rem;
+  }
+
+  .profile-container {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+  }
+
+  .profile-decoration:nth-child(1) {
+    width: 270px;
+    height: 270px;
+  }
+
+  .profile-decoration:nth-child(2) {
+    width: 290px;
+    height: 290px;
+  }
+
+  /* Секции */
+  section {
+    padding: 3rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Навигация */
+  .nav-links {
+    width: 85%;
+    padding: 4rem 1.5rem;
+    gap: 1rem;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0.8rem;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    background: rgba(99, 102, 241, 0.1);
+  }
+
+  /* Кнопки */
+  .cta-buttons {
+    gap: 1rem;
+  }
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Карточки */
+  .services-grid,
+  .projects-grid,
+  .skills-grid {
+    gap: 1.5rem;
+  }
+
+  .service-card,
+  .project-card,
+  .skill-category {
+    padding: 1.5rem;
+  }
+
+  /* Статистика */
+  .about-stats {
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  /* Контакты */
+  .contact-methods {
+    gap: 1rem;
+  }
+
+  .contact-card {
+    padding: 1.5rem;
+  }
+
+  /* Footer */
+  footer {
+    padding: 1.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .mobile-menu-btn {
+    padding: 3px;
+  }
+
+  .mobile-menu-btn span {
+    width: 20px;
+    height: 2px;
+  }
+
+  /* Улучшенный переключатель языков на мобильных */
+  .lang-switcher {
+    padding: 0.3rem;
+    gap: 0.2rem;
+  }
+
+  .lang-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    min-width: 45px;
+  }
+
+  /* Компактные табы */
+  .skill-tag,
+  .feature-tag,
+  .project-tag {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Иконки соцсетей меньше */
+  .social-link {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  /* Кнопка скролла вверх */
+  .scroll-top {
+    width: 40px;
+    height: 40px;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Горизонтальная ориентация на мобильных */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding: 100px 5% 4rem;
+  }
+
+  .profile-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .hero-content {
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
 }
 
 /* Contact Section */
@@ -1233,4 +1697,237 @@ body[data-current-lang="uz"] [data-lang="ru"] {
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ========== ВАШИ СУЩЕСТВУЮЩИЕ СТИЛИ (НЕ ТРОГАЙТЕ) ========== */
+[data-theme="light"] {
+  --bg-main: #ffffff;
+  --bg-secondary: #f8fafc;
+  --card-bg: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: rgba(99, 102, 241, 0.15);
+  --dark: #0f172a;
+  --dark-light: #ffffff;
+}
+
+[data-theme="light"] .bg-animation::before {
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.08) 1px,
+    transparent 1px
+  );
+}
+
+[data-theme="light"] nav {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="light"] .theme-toggle-slider {
+  transform: translateX(24px);
+}
+
+/* ========== ДОБАВЬТЕ МОИ СТИЛИ НИЖЕ ========== */
+
+/* ========== УЛУЧШЕННАЯ СВЕТЛАЯ ТЕМА ========== */
+[data-theme="light"] .service-card,
+[data-theme="light"] .project-card,
+[data-theme="light"] .skill-category,
+[data-theme="light"] .contact-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] .service-card:hover,
+[data-theme="light"] .project-card:hover,
+[data-theme="light"] .skill-category:hover,
+[data-theme="light"] .contact-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Разные фоны для разных секций */
+[data-theme="light"] .service-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+[data-theme="light"] .skill-category {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+}
+
+[data-theme="light"] .contact-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+/* Тень для текста в светлой теме */
+[data-theme="light"] .hero-text h1 {
+  text-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+}
+
+/* Более насыщенные градиенты */
+[data-theme="light"] .stat-number {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  -webkit-background-clip: text;
+}
+
+/* Улучшенные кнопки */
+[data-theme="light"] .btn-primary {
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);
+}
+
+[data-theme="light"] .btn-secondary {
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #4f46e5;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+
+/* ========== ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ ========== */
+
+/* Плавный скролл */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Оптимизация для сенсорных устройств */
+@media (hover: none) {
+  .btn:hover,
+  .skill-tag:hover,
+  .project-card:hover {
+    transform: none;
+  }
+
+  .project-card:active,
+  .service-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Улучшение читаемости на светлой теме */
+[data-theme="light"] .nav-links a,
+[data-theme="light"] .hero-text h1,
+[data-theme="light"] .section-title {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Градиентные подложки для секций */
+#services {
+  position: relative;
+}
+
+#services::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary),
+    var(--accent),
+    transparent
+  );
+  opacity: 0.3;
+}
+
+/* Анимация появления */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.about-text {
+  animation: slideInFromLeft 0.8s ease-out;
+}
+
+.about-stats {
+  animation: slideInFromRight 0.8s ease-out;
+}
+
+/* ========== РАЗНЫЕ СТИЛИ КАРТОЧЕК ========== */
+
+/* About - минималистичные карточки */
+.about-stats .stat-card {
+  border-radius: 16px;
+  border: 2px solid transparent;
+  background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    linear-gradient(135deg, var(--primary), transparent) border-box;
+}
+
+/* Skills - стеклянный эффект */
+.skill-category {
+  backdrop-filter: blur(10px);
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="light"] .skill-category {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+/* Services - с акцентной рамкой */
+.service-card {
+  border-left: 4px solid var(--primary);
+  border-radius: 16px;
+}
+
+/* Projects - с hover эффектом свечения */
+.project-card {
+  position: relative;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px 4px 0 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover::after {
+  opacity: 1;
+}
+
+/* Contact - круглые иконки */
+.contact-card .contact-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
 }
