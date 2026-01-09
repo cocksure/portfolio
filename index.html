@@ -3,10 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Махмудов Санжар — Web Developer</title>
+
+    <!-- SEO Meta Tags -->
+    <title>Махмудов Санжар — Web Developer | Django, ERP системы</title>
+    <meta
+      name="description"
+      content="Профессиональный веб-разработчик в Узбекистане. Создаю ERP системы, интегрирую AI, разрабатываю сайты на Django и React. Опыт работы с производственными компаниями."
+    />
+    <meta
+      name="keywords"
+      content="веб-разработчик узбекистан, django developer tashkent, erp системы, ai интеграция, web developer uzbekistan, санжар махмудов, python developer"
+    />
+    <meta name="author" content="Санжар Махмудов" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://sanjarweb.uz/" />
+
+    <!-- Open Graph (для соцсетей) -->
+    <meta property="og:title" content="Санжар Махмудов — Web Developer" />
+    <meta
+      property="og:description"
+      content="Создаю ERP системы, интегрирую AI, разрабатываю сайты на Django. Профессиональная веб-разработка в Узбекистане."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sanjarweb.uz/" />
+    <meta property="og:site_name" content="Sanjar Makhmudov Portfolio" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="uz_UZ" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Санжар Махмудов — Web Developer" />
+    <meta
+      name="twitter:description"
+      content="Django, ERP, AI Integration | Professional Web Developer"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>"
+    />
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="style.css" as="style" />
+    <link rel="preload" href="main.js" as="script" />
+
+    <!-- DNS Prefetch для улучшения производительности -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body data-theme="dark" data-current-lang="ru">
+    <!-- Background Elements -->
     <div class="bg-animation"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -48,21 +101,40 @@
             ><a href="#contact" data-lang="uz">Aloqa</a>
           </li>
           <li class="lang-switcher">
-            <button class="lang-btn active" data-lang-btn="ru">RU</button>
-            <button class="lang-btn" data-lang-btn="en">EN</button>
-            <button class="lang-btn" data-lang-btn="uz">UZ</button>
+            <button
+              class="lang-btn active"
+              data-lang-btn="ru"
+              aria-label="Russian"
+            >
+              RU
+            </button>
+            <button class="lang-btn" data-lang-btn="en" aria-label="English">
+              EN
+            </button>
+            <button class="lang-btn" data-lang-btn="uz" aria-label="Uzbek">
+              UZ
+            </button>
           </li>
           <li>
-            <div class="theme-toggle" id="themeToggle">
+            <div
+              class="theme-toggle"
+              id="themeToggle"
+              role="button"
+              aria-label="Toggle theme"
+            >
               <div class="theme-toggle-slider">🌙</div>
             </div>
           </li>
         </ul>
-        <div class="mobile-menu-btn" id="mobileMenuBtn">
+        <button
+          class="mobile-menu-btn"
+          id="mobileMenuBtn"
+          aria-label="Toggle menu"
+        >
           <span></span>
           <span></span>
           <span></span>
-        </div>
+        </button>
       </div>
     </nav>
 
@@ -112,8 +184,13 @@
             <div class="profile-decoration"></div>
             <div class="profile-decoration"></div>
             <div class="profile-image">
-              <!-- Если хотите добавить фото, раскомментируйте строку ниже и замените src -->
-              <img src="images/avatar.png" alt="Санжар Махмудов" />
+              <img
+                src="images/avatar.png"
+                alt="Санжар Махмудов"
+                width="400"
+                height="400"
+                loading="eager"
+              />
             </div>
           </div>
         </div>
@@ -237,7 +314,6 @@
           <h3>Frontend Development</h3>
           <div class="skill-list">
             <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">React</span>
             <span class="skill-tag">HTML5</span>
             <span class="skill-tag">CSS3</span>
             <span class="skill-tag">Tailwind CSS</span>
@@ -278,9 +354,8 @@
       <h2 class="section-title" data-lang="uz">Nima taklif qilaman</h2>
 
       <div class="services-grid">
-        <!-- ERP Systems -->
         <div class="service-card">
-          <div class="service-icon">🏭</div>
+          <div class="service-icon" aria-hidden="true">🏭</div>
           <h3 data-lang="ru">Разработка ERP систем</h3>
           <h3 data-lang="en">ERP System Development</h3>
           <h3 data-lang="uz">ERP tizimlarini ishlab chiqish</h3>
@@ -307,24 +382,20 @@
               >✓ Inventory Management</span
             >
             <span class="feature-tag" data-lang="uz">✓ Ombor hisobi</span>
-
             <span class="feature-tag" data-lang="ru">✓ Производство</span>
             <span class="feature-tag" data-lang="en">✓ Production</span>
             <span class="feature-tag" data-lang="uz">✓ Ishlab chiqarish</span>
-
             <span class="feature-tag" data-lang="ru">✓ Финансы</span>
             <span class="feature-tag" data-lang="en">✓ Finance</span>
             <span class="feature-tag" data-lang="uz">✓ Moliya</span>
-
             <span class="feature-tag" data-lang="ru">✓ Отчёты</span>
             <span class="feature-tag" data-lang="en">✓ Reports</span>
             <span class="feature-tag" data-lang="uz">✓ Hisobotlar</span>
           </div>
         </div>
 
-        <!-- AI Integration -->
         <div class="service-card">
-          <div class="service-icon">🤖</div>
+          <div class="service-icon" aria-hidden="true">🤖</div>
           <h3 data-lang="ru">Интеграция AI и автоматизация</h3>
           <h3 data-lang="en">AI Integration & Automation</h3>
           <h3 data-lang="uz">AI integratsiyasi va avtomatlashtirish</h3>
@@ -352,24 +423,20 @@
             <span class="feature-tag" data-lang="uz"
               >✓ Ma'lumotlar tahlili</span
             >
-
             <span class="feature-tag" data-lang="ru">✓ Прогнозирование</span>
             <span class="feature-tag" data-lang="en">✓ Forecasting</span>
             <span class="feature-tag" data-lang="uz">✓ Prognozlash</span>
-
             <span class="feature-tag" data-lang="ru">✓ Чат-боты</span>
             <span class="feature-tag" data-lang="en">✓ Chatbots</span>
             <span class="feature-tag" data-lang="uz">✓ Chat-botlar</span>
-
             <span class="feature-tag" data-lang="ru">✓ Автоотчёты</span>
             <span class="feature-tag" data-lang="en">✓ Auto Reports</span>
             <span class="feature-tag" data-lang="uz">✓ Avto-hisobotlar</span>
           </div>
         </div>
 
-        <!-- Web Development -->
         <div class="service-card">
-          <div class="service-icon">💻</div>
+          <div class="service-icon" aria-hidden="true">💻</div>
           <h3 data-lang="ru">Веб-разработка под ключ</h3>
           <h3 data-lang="en">Turnkey Web Development</h3>
           <h3 data-lang="uz">Tayyor veb-ishlab chiqish</h3>
@@ -394,15 +461,12 @@
             <span class="feature-tag" data-lang="ru">✓ Корп. сайты</span>
             <span class="feature-tag" data-lang="en">✓ Corp. Websites</span>
             <span class="feature-tag" data-lang="uz">✓ Korp. saytlar</span>
-
             <span class="feature-tag" data-lang="ru">✓ E-commerce</span>
             <span class="feature-tag" data-lang="en">✓ E-commerce</span>
             <span class="feature-tag" data-lang="uz">✓ E-commerce</span>
-
             <span class="feature-tag" data-lang="ru">✓ Telegram боты</span>
             <span class="feature-tag" data-lang="en">✓ Telegram Bots</span>
             <span class="feature-tag" data-lang="uz">✓ Telegram botlar</span>
-
             <span class="feature-tag" data-lang="ru">✓ API интеграции</span>
             <span class="feature-tag" data-lang="en">✓ API Integration</span>
             <span class="feature-tag" data-lang="uz">✓ API integratsiya</span>
@@ -602,7 +666,6 @@
 
             <div class="project-tags">
               <span class="project-tag">Django</span>
-              <span class="project-tag">React</span>
               <span class="project-tag">PostgreSQL</span>
               <span class="project-tag">Redis</span>
               <span class="project-tag">Syncfusion</span>
@@ -832,6 +895,43 @@
         &copy; 2025 Mahmudov Sanjar. Barcha huquqlar himoyalangan.
       </p>
     </footer>
+
+    <!-- Schema.org разметка для поисковиков -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Санжар Махмудов",
+        "alternateName": "Sanjar Makhmudov",
+        "jobTitle": "Web Developer",
+        "description": "Профессиональный веб-разработчик специализирующийся на Django и ERP системах",
+        "url": "https://sanjarweb.uz",
+        "email": "sanjarwer93@gmail.com",
+        "sameAs": [
+          "https://github.com/cocksure",
+          "https://instagram.com/__maxmudov",
+          "https://t.me/cocksure"
+        ],
+        "knowsAbout": [
+          "Django",
+          "PostgreSQL",
+          "Python",
+          "ERP Systems",
+          "AI Integration",
+          "Web Development"
+        ],
+        "knowsLanguage": ["ru", "en", "uz"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "UZ",
+          "addressLocality": "Tashkent"
+        },
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Freelance"
+        }
+      }
+    </script>
 
     <!-- Scroll to Top Button -->
     <div class="scroll-top" id="scrollTop">↑</div>

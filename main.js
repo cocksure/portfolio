@@ -138,24 +138,70 @@ function initNavigation() {
   });
 }
 
+// ============================================
+// 3. MOBILE MENU (УЛУЧШЕННАЯ ВЕРСИЯ)
+// ============================================
+
 function initMobileMenu() {
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const navLinks = document.getElementById("navLinks");
 
   if (!mobileMenuBtn || !navLinks) return;
 
-  mobileMenuBtn.addEventListener("click", () => {
-    mobileMenuBtn.classList.toggle("active");
-    navLinks.classList.toggle("active");
+  // Открытие/закрытие по кнопке
+  mobileMenuBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Предотвращаем всплытие
+    toggleMenu();
   });
 
-  // Закрытие меню при клике на ссылку
+  // Закрытие при клике на ссылку
   navLinks.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      mobileMenuBtn.classList.remove("active");
-      navLinks.classList.remove("active");
+      closeMenu();
     });
   });
+
+  // ✨ НОВОЕ: Закрытие при клике вне sidebar
+  document.addEventListener("click", (e) => {
+    const isMenuOpen = navLinks.classList.contains("active");
+    const clickedInsideMenu = navLinks.contains(e.target);
+    const clickedMenuButton = mobileMenuBtn.contains(e.target);
+
+    // Если меню открыто И клик ВНЕ меню И клик НЕ по кнопке
+    if (isMenuOpen && !clickedInsideMenu && !clickedMenuButton) {
+      closeMenu();
+    }
+  });
+
+  // ✨ НОВОЕ: Закрытие по ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navLinks.classList.contains("active")) {
+      closeMenu();
+    }
+  });
+
+  // ✨ НОВОЕ: Блокировка скролла при открытом меню
+  function toggleMenu() {
+    const isOpen = navLinks.classList.contains("active");
+
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  }
+
+  function openMenu() {
+    mobileMenuBtn.classList.add("active");
+    navLinks.classList.add("active");
+    document.body.style.overflow = "hidden"; // Блокируем скролл
+  }
+
+  function closeMenu() {
+    mobileMenuBtn.classList.remove("active");
+    navLinks.classList.remove("active");
+    document.body.style.overflow = ""; // Разблокируем скролл
+  }
 }
 
 // ============================================
@@ -279,4 +325,29 @@ function initDownloadResume() {
   }
 }
 
-console.log("✅ Portfolio JS loaded successfully");
+// В конец файла добавьте:
+
+// ============================================
+// 7. PERFORMANCE OPTIMIZATIONS
+// ============================================
+
+// Lazy loading для изображений
+if ("loading" in HTMLImageElement.prototype) {
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  images.forEach((img) => {
+    img.addEventListener("load", () => {
+      img.classList.add("loaded");
+    });
+  });
+} else {
+  // Fallback для старых браузеров
+  const script = document.createElement("script");
+  script.src =
+    "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js";
+  document.body.appendChild(script);
+}
+
+// Отслеживание ошибок (опционально)
+window.addEventListener("error", (e) => {
+  console.error("Portfolio Error:", e.message);
+});

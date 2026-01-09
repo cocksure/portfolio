@@ -1,0 +1,14 @@
+# Разрешаем всем поисковикам индексировать сайт
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sanjarweb.uz/sitemap.xml
+
+# Ускоряем индексацию для Google
+User-agent: Googlebot
+Allow: /
+
+# Ускоряем индексацию для Yandex
+User-agent: Yandex
+Allow: /

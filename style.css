@@ -1931,3 +1931,93 @@ html {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
 }
+
+/* ========== PRODUCTION OPTIMIZATIONS ========== */
+
+/* Улучшение производительности */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration для анимаций */
+.project-card,
+.service-card,
+.skill-category,
+.stat-card,
+.contact-card {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Lazy loading для изображений */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* Accessibility improvements */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduce motion для пользователей с настройками */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========== УЛУЧШЕННЫЙ OVERLAY ДЛЯ МОБИЛЬНОГО МЕНЮ ========== */
+
+/* Затемнение фона при открытом меню */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Мобильное меню */
+@media (max-width: 968px) {
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 70%;
+    max-width: 300px;
+    background: var(--card-bg);
+    flex-direction: column;
+    padding: 5rem 2rem;
+    gap: 1.5rem;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+}
