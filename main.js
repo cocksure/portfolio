@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initCardTilt();
   initMagneticButtons();
   initStaggeredCards();
+  initImmersiveHeroScene();
+  initProjectHoverShowcase();
+
+  setTimeout(() => {
+    body.classList.add("hero-intro-done");
+  }, 1800);
 });
 
 // ============================================
@@ -233,8 +239,8 @@ function initAnimations() {
     }
   );
 
-  // Наблюдаем за всеми секциями
-  document.querySelectorAll("section").forEach((section) => {
+  // Наблюдаем только за секциями, которым реально нужен fade-in.
+  document.querySelectorAll(".fade-in").forEach((section) => {
     fadeObserver.observe(section);
   });
 
@@ -376,21 +382,24 @@ function initTypingEffect() {
 
   const texts = ["Web Developer", "Backend Engineer", "Django Expert", "ERP Architect"];
   let textIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
+  let charIndex = texts[0].length;
+  let isDeleting = true;
+  const stableSpace = "\u00a0";
+  const textNode = document.createTextNode(stableSpace + texts[0]);
 
   const cursor = document.createElement("span");
   cursor.className = "typing-cursor";
-  profession.after(cursor);
+  profession.textContent = "";
+  profession.append(textNode, cursor);
 
   function type() {
     const currentText = texts[textIndex];
 
     if (isDeleting) {
-      profession.textContent = currentText.substring(0, charIndex - 1);
+      textNode.nodeValue = stableSpace + currentText.substring(0, charIndex - 1);
       charIndex--;
     } else {
-      profession.textContent = currentText.substring(0, charIndex + 1);
+      textNode.nodeValue = stableSpace + currentText.substring(0, charIndex + 1);
       charIndex++;
     }
 
@@ -426,21 +435,27 @@ function initCursorGlow() {
   let mouseY = window.innerHeight / 2;
   let glowX = mouseX;
   let glowY = mouseY;
+  let rafId = null;
 
   document.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    if (!rafId) {
+      rafId = requestAnimationFrame(animate);
+    }
   });
 
   function animate() {
     glowX += (mouseX - glowX) * 0.07;
     glowY += (mouseY - glowY) * 0.07;
-    glow.style.left = glowX + "px";
-    glow.style.top = glowY + "px";
-    requestAnimationFrame(animate);
-  }
+    glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate(-50%, -50%)`;
 
-  animate();
+    if (Math.abs(mouseX - glowX) > 0.5 || Math.abs(mouseY - glowY) > 0.5) {
+      rafId = requestAnimationFrame(animate);
+    } else {
+      rafId = null;
+    }
+  }
 }
 
 // ============================================
@@ -466,20 +481,28 @@ function initScrollProgress() {
 function initActiveSection() {
   const sections = document.querySelectorAll("section[id]");
   const navLinks = document.querySelectorAll(".nav-links a[href^='#']");
+  const visible = new Set();
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          navLinks.forEach((link) => {
-            const isActive = link.getAttribute("href") === `#${id}`;
-            link.classList.toggle("active-link", isActive);
-          });
+          visible.add(entry.target.id);
+        } else {
+          visible.delete(entry.target.id);
         }
       });
+
+      let activeId = null;
+      sections.forEach((s) => {
+        if (visible.has(s.id) && activeId === null) activeId = s.id;
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.toggle("active-link", link.getAttribute("href") === `#${activeId}`);
+      });
     },
-    { threshold: 0.35, rootMargin: "-80px 0px -40% 0px" }
+    { threshold: 0.1, rootMargin: "-80px 0px -20% 0px" }
   );
 
   sections.forEach((s) => observer.observe(s));
@@ -492,7 +515,7 @@ function initActiveSection() {
 function initCardTilt() {
   if (window.matchMedia("(hover: none)").matches) return;
 
-  const cards = document.querySelectorAll(".project-card, .service-card, .stat-card");
+  const cards = document.querySelectorAll(".service-card, .stat-card");
 
   cards.forEach((card) => {
     card.addEventListener("mouseenter", () => {
@@ -524,7 +547,7 @@ function initCardTilt() {
 
 function initStaggeredCards() {
   const grids = document.querySelectorAll(
-    ".skills-grid, .services-grid, .projects-grid, .contact-methods"
+    ".skills-grid, .services-grid, .contact-methods"
   );
 
   grids.forEach((grid) => {
@@ -536,10 +559,12 @@ function initStaggeredCards() {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
 
+          const isAlreadyPastTop = entry.boundingClientRect.top < 0;
+
           Array.from(entry.target.children).forEach((card, i) => {
             setTimeout(() => {
               card.classList.add("card-visible");
-            }, i * 110);
+            }, isAlreadyPastTop ? 0 : i * 120);
           });
 
           observer.unobserve(entry.target);
@@ -569,6 +594,246 @@ function initMagneticButtons() {
 
     btn.addEventListener("mouseleave", () => {
       btn.style.transform = "";
+    });
+  });
+}
+
+// ============================================
+// 15. LUSION-INSPIRED HERO CANVAS
+// ============================================
+
+function initImmersiveHeroScene() {
+  const canvas = document.getElementById("heroVisualizer");
+  const hero = document.querySelector(".hero");
+  if (!canvas || !hero) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const ctx = canvas.getContext("2d", { alpha: true });
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let points = [];
+  let rafId = null;
+  let isHeroVisible = true;
+  let pointer = { x: 0.5, y: 0.5, active: false };
+
+  const palette = [
+    [99, 102, 241],
+    [6, 182, 212],
+    [163, 230, 53],
+    [249, 115, 22],
+  ];
+
+  function resize() {
+    const rect = hero.getBoundingClientRect();
+    width = Math.max(320, rect.width);
+    height = Math.max(480, rect.height);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const count = width < 700 ? 24 : 42;
+    points = Array.from({ length: count }, (_, index) => {
+      const color = palette[index % palette.length];
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        baseX: Math.random() * width,
+        baseY: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        size: 1.3 + Math.random() * 2.8,
+        phase: Math.random() * Math.PI * 2,
+        color,
+      };
+    });
+  }
+
+  function draw(time) {
+    ctx.clearRect(0, 0, width, height);
+    const t = time * 0.001;
+    const pointerX = pointer.x * width;
+    const pointerY = pointer.y * height;
+
+    const gradient = ctx.createRadialGradient(
+      pointerX,
+      pointerY,
+      0,
+      pointerX,
+      pointerY,
+      Math.max(width, height) * 0.55
+    );
+    gradient.addColorStop(0, "rgba(163, 230, 53, 0.09)");
+    gradient.addColorStop(0.45, "rgba(6, 182, 212, 0.045)");
+    gradient.addColorStop(1, "rgba(15, 23, 42, 0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    points.forEach((point, index) => {
+      const driftX = Math.sin(t * 0.75 + point.phase) * 18;
+      const driftY = Math.cos(t * 0.62 + point.phase) * 16;
+      point.baseX += point.vx;
+      point.baseY += point.vy;
+
+      if (point.baseX < -40 || point.baseX > width + 40) point.vx *= -1;
+      if (point.baseY < -40 || point.baseY > height + 40) point.vy *= -1;
+
+      const dx = pointerX - point.baseX;
+      const dy = pointerY - point.baseY;
+      const distance = Math.hypot(dx, dy);
+      const pull = pointer.active ? Math.max(0, 1 - distance / 280) : 0;
+
+      point.x = point.baseX + driftX + dx * pull * 0.08;
+      point.y = point.baseY + driftY + dy * pull * 0.08;
+
+      for (let j = index + 1; j < points.length; j++) {
+        const other = points[j];
+        const linkDistance = Math.hypot(point.x - other.x, point.y - other.y);
+        if (linkDistance > 150) continue;
+
+        const alpha = (1 - linkDistance / 150) * 0.24;
+        ctx.strokeStyle = `rgba(${point.color.join(",")}, ${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(point.x, point.y);
+        ctx.lineTo(other.x, other.y);
+        ctx.stroke();
+      }
+    });
+
+    points.forEach((point) => {
+      const pulse = Math.sin(t * 2 + point.phase) * 0.5 + 0.5;
+      ctx.fillStyle = `rgba(${point.color.join(",")}, ${0.45 + pulse * 0.45})`;
+      ctx.shadowColor = `rgba(${point.color.join(",")}, 0.8)`;
+      ctx.shadowBlur = 16;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, point.size + pulse * 1.4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.shadowBlur = 0;
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function start() {
+    if (rafId || prefersReducedMotion.matches || !isHeroVisible) return;
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function stop() {
+    if (!rafId) return;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
+  hero.addEventListener("pointermove", (e) => {
+    const rect = hero.getBoundingClientRect();
+    pointer.x = (e.clientX - rect.left) / rect.width;
+    pointer.y = (e.clientY - rect.top) / rect.height;
+    pointer.active = true;
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    pointer.active = false;
+  });
+
+  window.addEventListener("resize", resize, { passive: true });
+  const visibilityObserver = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      isHeroVisible = Boolean(entry?.isIntersecting);
+
+      if (isHeroVisible) {
+        start();
+      } else {
+        stop();
+      }
+    },
+    { threshold: 0.05 }
+  );
+
+  visibilityObserver.observe(hero);
+
+  const handleMotionPreference = () => {
+    if (prefersReducedMotion.matches) {
+      stop();
+      ctx.clearRect(0, 0, width, height);
+    } else {
+      resize();
+      start();
+    }
+  };
+
+  if (prefersReducedMotion.addEventListener) {
+    prefersReducedMotion.addEventListener("change", handleMotionPreference);
+  } else if (prefersReducedMotion.addListener) {
+    prefersReducedMotion.addListener(handleMotionPreference);
+  }
+
+  resize();
+  start();
+}
+
+// ============================================
+// 16. PROJECT HOVER SHOWCASE
+// ============================================
+
+function initProjectHoverShowcase() {
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  const cards = document.querySelectorAll(".project-card");
+  if (!cards.length) return;
+
+  const preview = document.createElement("div");
+  preview.className = "project-hover-preview";
+  document.body.appendChild(preview);
+
+  let targetX = window.innerWidth * 0.72;
+  let targetY = window.innerHeight * 0.5;
+  let currentX = targetX;
+  let currentY = targetY;
+  let rafId = null;
+
+  function setPreview(card) {
+    const image = card.querySelector(".project-image img");
+    const icon = card.querySelector(".project-icon");
+
+    if (image) {
+      preview.innerHTML = `<img src="${image.getAttribute("src")}" alt="">`;
+    } else if (icon) {
+      preview.innerHTML = `<span>${icon.textContent.trim()}</span>`;
+    }
+  }
+
+  function animatePreview() {
+    currentX += (targetX - currentX) * 0.16;
+    currentY += (targetY - currentY) * 0.16;
+    preview.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%) rotate(-2deg)`;
+    rafId = requestAnimationFrame(animatePreview);
+  }
+
+  cards.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      setPreview(card);
+      preview.classList.add("active");
+      card.classList.add("project-card-active");
+      if (!rafId) animatePreview();
+    });
+
+    card.addEventListener("mousemove", (event) => {
+      targetX = Math.min(window.innerWidth - 220, event.clientX + 180);
+      targetY = Math.min(window.innerHeight - 140, Math.max(140, event.clientY));
+      card.style.setProperty("--project-mouse-x", `${event.clientX}px`);
+    });
+
+    card.addEventListener("mouseleave", () => {
+      preview.classList.remove("active");
+      card.classList.remove("project-card-active");
     });
   });
 }
