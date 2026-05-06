@@ -11,7 +11,6 @@ const body = document.body;
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🚀 Portfolio initialized");
 
-  // Инициализация основных функций
   initLanguageSwitcher();
   initThemeToggle();
   initNavigation();
@@ -19,6 +18,15 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollEffects();
   initAnimations();
   initDownloadResume();
+
+  // Modern upgrades
+  initTypingEffect();
+  initCursorGlow();
+  initScrollProgress();
+  initActiveSection();
+  initCardTilt();
+  initMagneticButtons();
+  initStaggeredCards();
 });
 
 // ============================================
@@ -351,3 +359,210 @@ if ("loading" in HTMLImageElement.prototype) {
 window.addEventListener("error", (e) => {
   console.error("Portfolio Error:", e.message);
 });
+
+// ============================================
+// 8. TYPING EFFECT
+// ============================================
+
+function initTypingEffect() {
+  const profession = document.querySelector(".profession");
+  if (!profession) return;
+
+  const texts = ["Web Developer", "Backend Engineer", "Django Expert", "ERP Architect"];
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  const cursor = document.createElement("span");
+  cursor.className = "typing-cursor";
+  profession.after(cursor);
+
+  function type() {
+    const currentText = texts[textIndex];
+
+    if (isDeleting) {
+      profession.textContent = currentText.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      profession.textContent = currentText.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    let delay = isDeleting ? 55 : 110;
+
+    if (!isDeleting && charIndex === currentText.length) {
+      delay = 2400;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      textIndex = (textIndex + 1) % texts.length;
+      delay = 450;
+    }
+
+    setTimeout(type, delay);
+  }
+
+  setTimeout(type, 1200);
+}
+
+// ============================================
+// 9. CURSOR GLOW
+// ============================================
+
+function initCursorGlow() {
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  const glow = document.createElement("div");
+  glow.className = "cursor-glow";
+  document.body.appendChild(glow);
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let glowX = mouseX;
+  let glowY = mouseY;
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animate() {
+    glowX += (mouseX - glowX) * 0.07;
+    glowY += (mouseY - glowY) * 0.07;
+    glow.style.left = glowX + "px";
+    glow.style.top = glowY + "px";
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+// ============================================
+// 10. SCROLL PROGRESS BAR
+// ============================================
+
+function initScrollProgress() {
+  const bar = document.getElementById("scrollProgress");
+  if (!bar) return;
+
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = progress + "%";
+  }, { passive: true });
+}
+
+// ============================================
+// 11. ACTIVE SECTION HIGHLIGHT IN NAV
+// ============================================
+
+function initActiveSection() {
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-links a[href^='#']");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          navLinks.forEach((link) => {
+            const isActive = link.getAttribute("href") === `#${id}`;
+            link.classList.toggle("active-link", isActive);
+          });
+        }
+      });
+    },
+    { threshold: 0.35, rootMargin: "-80px 0px -40% 0px" }
+  );
+
+  sections.forEach((s) => observer.observe(s));
+}
+
+// ============================================
+// 12. 3D CARD TILT EFFECT
+// ============================================
+
+function initCardTilt() {
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  const cards = document.querySelectorAll(".project-card, .service-card, .stat-card");
+
+  cards.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      card.style.transition = "transform 0.08s ease, box-shadow 0.3s ease, border-color 0.3s ease";
+    });
+
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotX = ((y - cy) / cy) * -7;
+      const rotY = ((x - cx) / cx) * 7;
+
+      card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.01)`;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transition = "transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.3s ease";
+      card.style.transform = "";
+    });
+  });
+}
+
+// ============================================
+// 13. STAGGERED CARD ANIMATIONS ON SCROLL
+// ============================================
+
+function initStaggeredCards() {
+  const grids = document.querySelectorAll(
+    ".skills-grid, .services-grid, .projects-grid, .contact-methods"
+  );
+
+  grids.forEach((grid) => {
+    const cards = Array.from(grid.children);
+    cards.forEach((card) => card.classList.add("card-animate"));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          Array.from(entry.target.children).forEach((card, i) => {
+            setTimeout(() => {
+              card.classList.add("card-visible");
+            }, i * 110);
+          });
+
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    observer.observe(grid);
+  });
+}
+
+// ============================================
+// 14. MAGNETIC BUTTONS
+// ============================================
+
+function initMagneticButtons() {
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  document.querySelectorAll(".btn-primary, .btn-download").forEach((btn) => {
+    btn.addEventListener("mousemove", (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translateY(-3px) translate(${x * 0.22}px, ${y * 0.22}px)`;
+    });
+
+    btn.addEventListener("mouseleave", () => {
+      btn.style.transform = "";
+    });
+  });
+}

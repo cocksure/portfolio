@@ -279,6 +279,7 @@ nav.scrolled {
 /* Mobile Menu */
 /* ========== ИСПРАВЛЕННОЕ МЕНЮ ========== */
 .mobile-menu-btn {
+  display: none;
   width: 30px;
   height: 30px;
   position: relative;
@@ -348,16 +349,18 @@ nav.scrolled {
   visibility: visible;
 }
 
-/* Плавная анимация для пунктов меню */
-.nav-links li {
-  opacity: 0;
-  transform: translateX(20px);
-  transition: all 0.3s ease;
-}
+/* Плавная анимация для пунктов меню — только на мобильных */
+@media (max-width: 968px) {
+  .nav-links li {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
 
-.nav-links.active li {
-  opacity: 1;
-  transform: translateX(0);
+  .nav-links.active li {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .nav-links.active li:nth-child(1) {
@@ -2019,5 +2022,239 @@ img[loading="lazy"].loaded {
 
   .nav-links.active {
     right: 0;
+  }
+}
+
+/* ========== STAGGERED CARD ANIMATIONS ========== */
+
+.card-animate {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+}
+
+.card-animate.card-visible {
+  animation: cardReveal 0.65s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes cardReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========== MODERN UPGRADES ========== */
+
+/* Scroll Progress Bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+  z-index: 10000;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.7), 0 0 24px rgba(6, 182, 212, 0.4);
+  transition: width 0.05s linear;
+}
+
+/* Cursor Glow */
+.cursor-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.07), transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  will-change: left, top;
+  mix-blend-mode: screen;
+}
+
+[data-theme="light"] .cursor-glow {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.04), transparent 70%);
+  mix-blend-mode: multiply;
+}
+
+/* Typing cursor */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--accent);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  animation: blink-cursor 0.7s ease-in-out infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Active nav link */
+.nav-links a.active-link {
+  color: var(--accent) !important;
+}
+
+.nav-links a.active-link::after {
+  width: 100% !important;
+}
+
+/* Enhanced background mesh gradient */
+.bg-animation::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 40%, rgba(99, 102, 241, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(139, 92, 246, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 60% 90%, rgba(6, 182, 212, 0.09) 0%, transparent 65%);
+  animation: meshPulse 14s ease-in-out infinite alternate;
+}
+
+@keyframes meshPulse {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.06); }
+}
+
+/* Hero name drop glow */
+.hero-text h1 {
+  filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.28));
+}
+
+/* Section title neon underline */
+.section-title::after {
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.55), 0 0 30px rgba(6, 182, 212, 0.3);
+}
+
+/* Card tilt transition override (smooth restore) */
+.project-card,
+.service-card,
+.stat-card,
+.skill-category {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.4s ease,
+    border-color 0.3s ease !important;
+}
+
+/* Card glow on hover */
+.project-card:hover {
+  box-shadow:
+    0 25px 60px rgba(99, 102, 241, 0.28),
+    0 0 0 1px rgba(99, 102, 241, 0.25),
+    inset 0 0 80px rgba(99, 102, 241, 0.03) !important;
+}
+
+.service-card:hover {
+  box-shadow: 0 25px 60px rgba(99, 102, 241, 0.25) !important;
+}
+
+.skill-category:hover {
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Skill tag glow */
+.skill-tag:hover {
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.55) !important;
+}
+
+/* Logo hover glow */
+.logo:hover {
+  animation: none;
+  opacity: 1;
+  filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.9));
+  cursor: pointer;
+}
+
+/* Scroll-to-top glow */
+.scroll-top:hover {
+  box-shadow: 0 0 28px rgba(99, 102, 241, 0.75), 0 5px 20px rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Fix contact card tilt */
+.contact-card:hover {
+  transform: translateY(-8px) !important;
+}
+
+/* ========== MOBILE POLISH ========== */
+
+/* Отключить тяжёлый mesh-gradient на мобильных */
+@media (max-width: 768px) {
+  .bg-animation::after {
+    display: none;
+  }
+}
+
+/* Stat cards — держать 2 колонки на маленьких экранах */
+@media (max-width: 640px) {
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Улучшенный mobile hero */
+@media (max-width: 968px) {
+  .hero {
+    padding-top: 100px;
+    padding-bottom: 3rem;
+    min-height: 100svh;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .cta-buttons {
+    justify-content: center;
+  }
+
+  .hero-text .profession::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Мобильное меню — стиль */
+@media (max-width: 968px) {
+  .nav-links {
+    border-left: 1px solid var(--border-color);
+  }
+
+  .nav-links a {
+    font-size: 1.1rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .lang-switcher {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* Минимальный размер тач-целей */
+@media (max-width: 768px) {
+  .btn,
+  .lang-btn,
+  .scroll-top,
+  .social-link,
+  .project-link {
+    min-height: 44px;
+  }
+
+  .project-image {
+    height: 190px;
+  }
+
+  /* Убрать typing cursor на маленьких экранах чтобы не ломал layout */
+  .typing-cursor {
+    display: none;
   }
 }
