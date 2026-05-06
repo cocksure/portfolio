@@ -114,7 +114,7 @@ function initNavigation() {
         scrollTopBtn.classList.remove("visible");
       }
     }
-  });
+  }, { passive: true });
 
   // Кнопка "наверх"
   if (scrollTopBtn) {
@@ -285,20 +285,26 @@ function initAnimations() {
 // ============================================
 
 function initScrollEffects() {
-  // Параллакс для частиц (опционально)
   const particles = document.querySelectorAll(".particle");
 
-  if (particles.length) {
-    window.addEventListener("scroll", () => {
-      const scrolled = window.pageYOffset;
+  // Параллакс частиц только на десктопе
+  if (!particles.length || window.matchMedia("(hover: none)").matches) return;
 
+  let ticking = false;
+
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+
+    requestAnimationFrame(() => {
+      const scrolled = window.pageYOffset;
       particles.forEach((particle, index) => {
         const speed = 0.3 + index * 0.1;
-        const yPos = -(scrolled * speed * 0.1);
-        particle.style.transform = `translateY(${yPos}px)`;
+        particle.style.transform = `translateY(${-(scrolled * speed * 0.1)}px)`;
       });
+      ticking = false;
     });
-  }
+  }, { passive: true });
 }
 
 // ============================================

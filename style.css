@@ -25,8 +25,11 @@
   --transition-duration: 0.3s;
 }
 
-/* Обновите переходы везде */
-* {
+/* Targeted transitions — только для интерактивных элементов */
+a, button, .btn, .lang-btn, .theme-toggle,
+.project-card, .service-card, .skill-category, .contact-card, .stat-card,
+.skill-tag, .feature-tag, .project-tag, .project-link, .social-link,
+.scroll-top, .nav-links a, .logo {
   transition: color var(--transition-duration) var(--transition-smooth),
     background-color var(--transition-duration) var(--transition-smooth),
     border-color var(--transition-duration) var(--transition-smooth),
@@ -2177,6 +2180,59 @@ img[loading="lazy"].loaded {
 /* Fix contact card tilt */
 .contact-card:hover {
   transform: translateY(-8px) !important;
+}
+
+/* ========== MOBILE PERFORMANCE ========== */
+
+@media (max-width: 768px) {
+  /* Отключить тяжёлые непрерывные анимации */
+  .profile-image {
+    animation: none !important;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+
+  .profile-decoration {
+    animation: none !important;
+  }
+
+  .particle {
+    display: none !important;
+  }
+
+  .bg-animation::before {
+    animation: none !important;
+    opacity: 0.4;
+  }
+
+  .service-icon,
+  .contact-icon {
+    animation: none !important;
+  }
+
+  .logo {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Убрать дорогой backdrop-filter */
+  .skill-category {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  nav {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  /* Снять will-change — жрёт GPU-память */
+  .project-card,
+  .service-card,
+  .skill-category,
+  .stat-card,
+  .contact-card {
+    will-change: auto !important;
+  }
 }
 
 /* ========== MOBILE POLISH ========== */
