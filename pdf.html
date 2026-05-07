@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sanjar Makhmudov — Resume</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --navy: #0e1e3d;
+        --navy2: #162847;
+        --navy3: #1e3560;
+        --blue: #2b5fad;
+        --accent: #4a8fe8;
+        --sky: #7fb3f5;
+        --frost: #b8d4f8;
+        --white: #f4f8ff;
+        --muted: #8baad6;
+        --text: #c8dcf5;
+        --dim: #5a7aaa;
+        --gold: #e8c56a;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: #060e1e;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding: 32px 16px;
+      }
+
+      /* ── Lang visibility ── */
+      [data-lang] {
+        display: none;
+      }
+      body.lang-ru [data-lang="ru"] {
+        display: revert;
+      }
+      body.lang-en [data-lang="en"] {
+        display: revert;
+      }
+      body.lang-uz [data-lang="uz"] {
+        display: revert;
+      }
+
+      /* ── Page ── */
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        background: var(--navy);
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        grid-template-rows: auto 1fr auto;
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+          0 40px 120px rgba(0, 0, 0, 0.8),
+          0 0 0 1px rgba(74, 143, 232, 0.12);
+      }
+      .page::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 240px;
+        height: 240px;
+        background: radial-gradient(
+          circle,
+          rgba(74, 143, 232, 0.18) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .page::after {
+        content: "";
+        position: absolute;
+        bottom: 80px;
+        left: 80px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(
+          circle,
+          rgba(30, 53, 96, 0.5) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      /* ══ HEADER ══ */
+      header {
+        grid-column: 1 / -1;
+        background: linear-gradient(
+          135deg,
+          var(--navy2) 0%,
+          var(--navy3) 60%,
+          #1a3a6a 100%
+        );
+        padding: 22px 28px 20px;
+        position: relative;
+        border-bottom: 1px solid rgba(74, 143, 232, 0.15);
+      }
+      header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          var(--gold),
+          var(--accent),
+          transparent
+        );
+      }
+
+      .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+
+      /* photo */
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .avatar {
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
+        border: 2.5px solid var(--accent);
+        object-fit: cover;
+        flex-shrink: 0;
+        box-shadow: 0 0 20px rgba(74, 143, 232, 0.5);
+      }
+
+      .name-block h1 {
+        font-family: "DM Serif Display", serif;
+        font-size: 30px;
+        font-weight: 400;
+        color: var(--white);
+        letter-spacing: -0.5px;
+        line-height: 1;
+      }
+      .name-block h1 span {
+        color: var(--accent);
+      }
+      .title-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        background: rgba(74, 143, 232, 0.15);
+        border: 1px solid rgba(74, 143, 232, 0.3);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 10.5px;
+        font-weight: 500;
+        color: var(--sky);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .title-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+
+      /* contacts + lang switcher */
+      .header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+      .lang-switcher {
+        display: flex;
+        gap: 4px;
+      }
+      .lang-btn {
+        font-size: 9.5px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 10px;
+        border: 1px solid rgba(74, 143, 232, 0.3);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .lang-btn:hover,
+      .lang-btn.active {
+        background: rgba(74, 143, 232, 0.2);
+        border-color: var(--accent);
+        color: var(--sky);
+      }
+
+      .contacts {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10.5px;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .contact-item:hover {
+        color: var(--sky);
+      }
+      .contact-item .icon {
+        width: 16px;
+        height: 16px;
+        background: rgba(74, 143, 232, 0.12);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: var(--accent);
+        flex-shrink: 0;
+      }
+
+      /* ══ SIDEBAR ══ */
+      aside {
+        background: rgba(10, 18, 36, 0.6);
+        border-right: 1px solid rgba(74, 143, 232, 0.1);
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .side-section-title {
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .side-section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(74, 143, 232, 0.2);
+      }
+
+      .skill-group {
+        margin-bottom: 10px;
+      }
+      .skill-group-label {
+        font-size: 8.5px;
+        font-weight: 600;
+        color: var(--gold);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .skill-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        background: rgba(74, 143, 232, 0.1);
+        border: 1px solid rgba(74, 143, 232, 0.2);
+        color: var(--frost);
+        border-radius: 3px;
+        padding: 2px 6px;
+        white-space: nowrap;
+      }
+
+      .lang-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 7px;
+      }
+      .lang-name {
+        font-size: 10px;
+        color: var(--text);
+        font-weight: 500;
+      }
+      .lang-level {
+        font-size: 8px;
+        color: var(--dim);
+        margin-left: 4px;
+      }
+      .dots {
+        display: flex;
+        gap: 3px;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(74, 143, 232, 0.15);
+        border: 1px solid rgba(74, 143, 232, 0.25);
+      }
+      .dot.on {
+        background: var(--accent);
+        border-color: var(--accent);
+        box-shadow: 0 0 4px rgba(74, 143, 232, 0.5);
+      }
+
+      .edu-block,
+      .status-block {
+        font-size: 9.5px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .edu-block strong,
+      .status-block strong {
+        display: block;
+        color: var(--text);
+        font-size: 10px;
+        margin-bottom: 2px;
+      }
+      .status-badge {
+        display: inline-block;
+        margin-top: 6px;
+        background: rgba(74, 143, 232, 0.12);
+        border: 1px solid rgba(74, 143, 232, 0.25);
+        border-radius: 10px;
+        padding: 3px 9px;
+        font-size: 8.5px;
+        color: var(--sky);
+      }
+
+      /* ══ MAIN ══ */
+      main {
+        padding: 18px 22px 18px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow: hidden;
+      }
+      .section-title {
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-title::before {
+        content: "";
+        width: 3px;
+        height: 12px;
+        background: linear-gradient(to bottom, var(--accent), var(--blue));
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          rgba(74, 143, 232, 0.25),
+          transparent
+        );
+      }
+
+      .profile-text {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.7;
+        border-left: 2px solid rgba(74, 143, 232, 0.25);
+        padding-left: 10px;
+      }
+      .profile-text strong {
+        color: var(--sky);
+        font-weight: 500;
+      }
+
+      .job {
+        margin-bottom: 13px;
+      }
+      .job:last-child {
+        margin-bottom: 0;
+      }
+      .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 2px;
+      }
+      .job-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--white);
+      }
+      .job-period {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8.5px;
+        color: var(--dim);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .job-company {
+        font-size: 10px;
+        color: var(--accent);
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+      .job-bullets {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .job-bullets li {
+        font-size: 10px;
+        color: var(--muted);
+        padding-left: 13px;
+        position: relative;
+        line-height: 1.5;
+      }
+      .job-bullets li::before {
+        content: "›";
+        position: absolute;
+        left: 2px;
+        color: var(--accent);
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+      .project-card {
+        background: rgba(74, 143, 232, 0.05);
+        border: 1px solid rgba(74, 143, 232, 0.12);
+        border-radius: 6px;
+        padding: 9px 11px;
+        position: relative;
+        overflow: hidden;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--blue));
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .project-card:hover {
+        background: rgba(74, 143, 232, 0.09);
+        border-color: rgba(74, 143, 232, 0.25);
+      }
+      .project-card:hover::before {
+        opacity: 1;
+      }
+      .project-name {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--white);
+        margin-bottom: 2px;
+      }
+      .project-desc {
+        font-size: 9.5px;
+        color: var(--dim);
+        line-height: 1.4;
+        margin-bottom: 5px;
+      }
+      .project-url {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        color: var(--sky);
+        text-decoration: none;
+        opacity: 0.7;
+      }
+
+      /* ══ FOOTER ══ */
+      .page-footer {
+        grid-column: 1 / -1;
+        padding: 10px 28px;
+        border-top: 1px solid rgba(74, 143, 232, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer-note {
+        font-size: 9px;
+        color: var(--dim);
+        font-style: italic;
+      }
+      .footer-divider {
+        height: 1px;
+        width: 60px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          rgba(74, 143, 232, 0.3),
+          transparent
+        );
+      }
+
+      /* ══ PRINT ══ */
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      @media print {
+        html,
+        body {
+          padding: 0;
+          margin: 0;
+          background: var(--navy);
+        }
+        .page {
+          box-shadow: none;
+          width: 210mm;
+          height: 297mm;
+          overflow: hidden;
+        }
+        .lang-switcher {
+          display: none !important;
+        }
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body class="lang-en">
+    <div class="page">
+      <!-- ── HEADER ── -->
+      <header>
+        <div class="header-inner">
+          <div class="header-left">
+            <img class="avatar" src="images/image.png" alt="Sanjar Makhmudov" />
+            <div class="name-block">
+              <h1>Sanjar <span>Makhmudov</span></h1>
+              <div class="title-badge">
+                <span data-lang="ru">Fullstack Веб-Разработчик</span>
+                <span data-lang="en">Full-Stack Web Developer</span>
+                <span data-lang="uz">Full-Stack Veb-Dasturchi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="header-right">
+            <div class="lang-switcher">
+              <button class="lang-btn" data-lang-btn="ru">RU</button>
+              <button class="lang-btn active" data-lang-btn="en">EN</button>
+              <button class="lang-btn" data-lang-btn="uz">UZ</button>
+            </div>
+            <div class="contacts">
+              <a class="contact-item" href="mailto:sanjarwer93@gmail.com">
+                <span class="icon">✉</span> sanjarwer93@gmail.com
+              </a>
+              <a
+                class="contact-item"
+                href="https://t.me/cocksure"
+                target="_blank"
+              >
+                <span class="icon">✈</span> t.me/cocksure
+              </a>
+              <a
+                class="contact-item"
+                href="https://github.com/cocksure"
+                target="_blank"
+              >
+                <span class="icon">⌥</span> github.com/cocksure
+              </a>
+              <a
+                class="contact-item"
+                href="https://sanjarweb.uz"
+                target="_blank"
+              >
+                <span class="icon">◈</span> sanjarweb.uz
+              </a>
+              <span class="contact-item">
+                <span class="icon">⌖</span> Tashkent, Uzbekistan
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ── SIDEBAR ── -->
+      <aside>
+        <div>
+          <div class="side-section-title">
+            <span data-lang="ru">Навыки</span>
+            <span data-lang="en">Skills</span>
+            <span data-lang="uz">Ko'nikmalar</span>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">Backend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Django</span>
+              <span class="skill-tag">DRF</span>
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">Redis</span>
+              <span class="skill-tag">Celery</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">Frontend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">HTML5</span>
+              <span class="skill-tag">CSS3</span>
+              <span class="skill-tag">Tailwind</span>
+              <span class="skill-tag">HTMX</span>
+              <span class="skill-tag">Chart.js</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">DevOps</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Linux</span>
+              <span class="skill-tag">Nginx</span>
+              <span class="skill-tag">Docker</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">VPS</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">
+              <span data-lang="ru">Другое</span>
+              <span data-lang="en">Other</span>
+              <span data-lang="uz">Boshqa</span>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">REST API</span>
+              <span class="skill-tag">AI/GPT</span>
+              <span class="skill-tag">TG Bots</span>
+              <span class="skill-tag">Excel/PDF</span>
+              <span class="skill-tag">Agile</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-section-title">
+            <span data-lang="ru">Языки</span>
+            <span data-lang="en">Languages</span>
+            <span data-lang="uz">Tillar</span>
+          </div>
+
+          <div class="lang-row">
+            <div>
+              <span class="lang-name">
+                <span data-lang="ru">Русский</span>
+                <span data-lang="en">Russian</span>
+                <span data-lang="uz">Rus tili</span>
+              </span>
+              <span class="lang-level">
+                <span data-lang="ru">Родной</span>
+                <span data-lang="en">Native</span>
+                <span data-lang="uz">Ona tili</span>
+              </span>
+            </div>
+            <div class="dots">
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+            </div>
+          </div>
+
+          <div class="lang-row">
+            <div>
+              <span class="lang-name">
+                <span data-lang="ru">Узбекский</span>
+                <span data-lang="en">Uzbek</span>
+                <span data-lang="uz">O'zbek tili</span>
+              </span>
+              <span class="lang-level">
+                <span data-lang="ru">Родной</span>
+                <span data-lang="en">Native</span>
+                <span data-lang="uz">Ona tili</span>
+              </span>
+            </div>
+            <div class="dots">
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+            </div>
+          </div>
+
+          <div class="lang-row">
+            <div>
+              <span class="lang-name">
+                <span data-lang="ru">Английский</span>
+                <span data-lang="en">English</span>
+                <span data-lang="uz">Ingliz tili</span>
+              </span>
+              <span class="lang-level">B1</span>
+            </div>
+            <div class="dots">
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot on"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-section-title">
+            <span data-lang="ru">Образование</span>
+            <span data-lang="en">Education</span>
+            <span data-lang="uz">Ta'lim</span>
+          </div>
+          <div class="edu-block">
+            <span data-lang="ru">
+              <strong>Среднее специальное</strong>
+              Право и юриспруденция<br />
+              Ташкент, Узбекистан<br />
+              <em>Самоучка в IT и веб-разработке</em>
+            </span>
+            <span data-lang="en">
+              <strong>Secondary Specialized</strong>
+              Law &amp; Jurisprudence<br />
+              Tashkent, Uzbekistan<br />
+              <em>Self-taught in IT &amp; Web Development</em>
+            </span>
+            <span data-lang="uz">
+              <strong>O'rta maxsus</strong>
+              Huquq va yurisdiksiya<br />
+              Toshkent, O'zbekiston<br />
+              <em>IT va veb-ishlab chiqishda o'z-o'zini o'rgatgan</em>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-section-title">
+            <span data-lang="ru">Статус</span>
+            <span data-lang="en">Status</span>
+            <span data-lang="uz">Holat</span>
+          </div>
+          <div class="status-block">
+            <strong>Uztex Group</strong>
+            <span data-lang="ru">Работаю с 2017 года</span>
+            <span data-lang="en">Employed since 2017</span>
+            <span data-lang="uz">2017 yildan ishlayapman</span>
+            <div class="status-badge">
+              <span data-lang="ru">Открыт к фрилансу</span>
+              <span data-lang="en">Open to freelance</span>
+              <span data-lang="uz">Frilansg ochiqman</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── MAIN ── -->
+      <main>
+        <!-- Profile -->
+        <section>
+          <div class="section-title">
+            <span data-lang="ru">Профиль</span>
+            <span data-lang="en">Profile</span>
+            <span data-lang="uz">Profil</span>
+          </div>
+          <p class="profile-text" data-lang="ru">
+            Самоучка full-stack разработчик с <strong>9 годами в IT</strong> и
+            <strong>3+ годами специализации в веб-разработке</strong>. Работаю в
+            Uztex Group, создаю ERP-системы и веб-приложения для
+            производственных предприятий. Реализовано
+            <strong>15+ продакшн-проектов</strong>: сложные ERP с AI-аналитикой,
+            e-commerce платформы и инструменты автоматизации бизнеса.
+          </p>
+          <p class="profile-text" data-lang="en">
+            Self-taught full-stack developer with
+            <strong>9 years in IT</strong> and
+            <strong>3+ years specializing in web development</strong>. Currently
+            at Uztex Group, building ERP systems and web apps for manufacturing
+            businesses. Delivered
+            <strong>15+ production projects</strong> including complex ERP
+            systems with AI analytics, e-commerce platforms, and business
+            automation tools.
+          </p>
+          <p class="profile-text" data-lang="uz">
+            IT sohasida <strong>9 yillik tajriba</strong> va veb-ishlab
+            chiqishda <strong>3+ yil ixtisoslashgan</strong> o'z-o'zini
+            o'rgatgan full-stack dasturchi. Uztex Group'da ishlab chiqarish
+            korxonalari uchun ERP tizimlari va veb-ilovalar yarataman. AI
+            tahlilli murakkab ERP tizimlar, e-commerce platformalar va biznes
+            avtomatlashtirish vositalarini o'z ichiga olgan
+            <strong>15+ ishlab chiqarish loyihasini</strong> amalga oshirdim.
+          </p>
+        </section>
+
+        <!-- Experience -->
+        <section>
+          <div class="section-title">
+            <span data-lang="ru">Опыт работы</span>
+            <span data-lang="en">Work Experience</span>
+            <span data-lang="uz">Ish tajribasi</span>
+          </div>
+
+          <!-- Job 1 -->
+          <div class="job">
+            <div class="job-header">
+              <span class="job-title">
+                <span data-lang="ru">Веб-разработчик</span>
+                <span data-lang="en">Web Developer</span>
+                <span data-lang="uz">Veb-dasturchi</span>
+              </span>
+              <span class="job-period">
+                <span data-lang="ru">Фев 2017 – н.в.</span>
+                <span data-lang="en">Feb 2017 – Present</span>
+                <span data-lang="uz">2017 Fev – hozir</span>
+              </span>
+            </div>
+            <div class="job-company">
+              Uztex Group ·
+              <span data-lang="ru">Ташкент</span>
+              <span data-lang="en">Tashkent</span>
+              <span data-lang="uz">Toshkent</span>
+            </div>
+            <ul class="job-bullets" data-lang="ru">
+              <li>
+                Разработка и поддержка ERP-систем для управления текстильным
+                производством
+              </li>
+              <li>
+                Создал AsiaInvest ERP для 3 производственных линий: ткацкое,
+                красильное, швейное
+              </li>
+              <li>
+                Внедрил AI-аналитику, автоматическую генерацию Excel/PDF отчётов
+                и дашборды
+              </li>
+              <li>
+                Реализовал 15+ проектов: корп. сайты, e-commerce,
+                таск-менеджеры, Telegram-боты
+              </li>
+            </ul>
+            <ul class="job-bullets" data-lang="en">
+              <li>
+                Built and maintaining ERP systems for textile production
+                management
+              </li>
+              <li>
+                Developed AsiaInvest ERP covering 3 production lines (weaving,
+                dyeing, sewing)
+              </li>
+              <li>
+                Integrated AI analytics, automated Excel/PDF reporting and data
+                dashboards
+              </li>
+              <li>
+                Delivered 15+ projects: corporate sites, e-commerce, task
+                managers, Telegram bots
+              </li>
+            </ul>
+            <ul class="job-bullets" data-lang="uz">
+              <li>
+                To'qimachilik ishlab chiqarish boshqaruvi uchun ERP tizimlarini
+                yaratish va qo'llab-quvvatlash
+              </li>
+              <li>
+                3 ta liniya (to'quv, bo'yash, tikuv) uchun AsiaInvest ERP
+                tizimini ishlab chiqdim
+              </li>
+              <li>
+                AI tahlil, avtomatik Excel/PDF hisobotlar va ma'lumotlar
+                dashboardlarini joriy ettim
+              </li>
+              <li>
+                15+ loyiha: korporativ saytlar, e-commerce, vazifa menejerlari,
+                Telegram botlar
+              </li>
+            </ul>
+          </div>
+
+          <!-- Job 2 -->
+          <div class="job">
+            <div class="job-header">
+              <span class="job-title">
+                <span data-lang="ru">Специалист по трудоустройству</span>
+                <span data-lang="en">Employment Specialist</span>
+                <span data-lang="uz">Bandlik mutaxassisi</span>
+              </span>
+              <span class="job-period">
+                <span data-lang="ru">2015 – Фев 2017</span>
+                <span data-lang="en">2015 – Feb 2017</span>
+                <span data-lang="uz">2015 – 2017 Fev</span>
+              </span>
+            </div>
+            <div class="job-company">
+              <span data-lang="ru">Центр занятости · Ташкент</span>
+              <span data-lang="en">Employment Center · Tashkent</span>
+              <span data-lang="uz">Bandlik markazi · Toshkent</span>
+            </div>
+            <ul class="job-bullets" data-lang="ru">
+              <li>
+                Консультирование соискателей и подбор кандидатов для
+                работодателей
+              </li>
+              <li>Ведение документации и государственной отчётности</li>
+            </ul>
+            <ul class="job-bullets" data-lang="en">
+              <li>
+                Counseled job seekers and matched candidates with employers
+              </li>
+              <li>Managed documentation and government reporting systems</li>
+            </ul>
+            <ul class="job-bullets" data-lang="uz">
+              <li>
+                Ish izlovchilarga maslahat berish va nomzodlarni ish beruvchilar
+                bilan moslashtirish
+              </li>
+              <li>Hujjatlar va davlat hisobotlarini yuritish</li>
+            </ul>
+          </div>
+
+          <!-- Job 3 -->
+          <div class="job">
+            <div class="job-header">
+              <span class="job-title">
+                <span data-lang="ru">Инспектор по соцпомощи</span>
+                <span data-lang="en">Social Assistance Inspector</span>
+                <span data-lang="uz">Ijtimoiy yordam inspektori</span>
+              </span>
+              <span class="job-period">2013 – 2015</span>
+            </div>
+            <div class="job-company">
+              <span data-lang="ru">Государственный орган · Ташкент</span>
+              <span data-lang="en">Government Agency · Tashkent</span>
+              <span data-lang="uz">Davlat idorasi · Toshkent</span>
+            </div>
+            <ul class="job-bullets" data-lang="ru">
+              <li>
+                Приём и обработка заявлений на получение социальной помощи
+              </li>
+              <li>Ведение дел граждан и административной документации</li>
+            </ul>
+            <ul class="job-bullets" data-lang="en">
+              <li>Assessed and processed social assistance applications</li>
+              <li>
+                Maintained citizen case records and administrative reports
+              </li>
+            </ul>
+            <ul class="job-bullets" data-lang="uz">
+              <li>Ijtimoiy yordam arizalarini qabul qilish va qayta ishlash</li>
+              <li>Fuqarolar ishi yozuvlari va ma'muriy hujjatlarni yuritish</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Projects -->
+        <section>
+          <div class="section-title">
+            <span data-lang="ru">Ключевые проекты</span>
+            <span data-lang="en">Key Projects</span>
+            <span data-lang="uz">Asosiy loyihalar</span>
+          </div>
+          <div class="projects-grid">
+            <div class="project-card">
+              <div class="project-name">AsiaInvest ERP</div>
+              <div class="project-desc">
+                <span data-lang="ru"
+                  >Полный цикл текстильного ERP с AI-аналитикой</span
+                >
+                <span data-lang="en"
+                  >Full-cycle textile ERP with AI analytics</span
+                >
+                <span data-lang="uz"
+                  >AI tahlilli to'liq tsikl to'qimachilik ERP</span
+                >
+              </div>
+              <a
+                class="project-url"
+                href="https://asiainvest.uz"
+                target="_blank"
+                >asiainvest.uz</a
+              >
+            </div>
+
+            <div class="project-card">
+              <div class="project-name">AnnArt</div>
+              <div class="project-desc">
+                <span data-lang="ru"
+                  >Сайт строительной компании + Telegram-бот</span
+                >
+                <span data-lang="en"
+                  >Construction company site + Telegram bot</span
+                >
+                <span data-lang="uz"
+                  >Qurilish kompaniyasi sayti + Telegram bot</span
+                >
+              </div>
+              <a class="project-url" href="https://annart.uz" target="_blank"
+                >annart.uz</a
+              >
+            </div>
+
+            <div class="project-card">
+              <div class="project-name">HomeTerry</div>
+              <div class="project-desc">
+                <span data-lang="ru"
+                  >E-commerce сайт производителя полотенец</span
+                >
+                <span data-lang="en">Towel manufacturer e-commerce site</span>
+                <span data-lang="uz"
+                  >Sochiq ishlab chiqaruvchining e-commerce sayti</span
+                >
+              </div>
+              <a class="project-url" href="https://hometerry.uz" target="_blank"
+                >hometerry.uz</a
+              >
+            </div>
+
+            <div class="project-card">
+              <div class="project-name">TaskFlow</div>
+              <div class="project-desc">
+                <span data-lang="ru"
+                  >Таск-менеджер в стиле Trello для команд</span
+                >
+                <span data-lang="en">Trello-style team task manager</span>
+                <span data-lang="uz"
+                  >Trello uslubidagi jamoa vazifa menejeri</span
+                >
+              </div>
+              <a
+                class="project-url"
+                href="https://tasksflow.pythonanywhere.com"
+                target="_blank"
+                >tasksflow.pythonanywhere.com</a
+              >
+            </div>
+
+            <div class="project-card">
+              <div class="project-name">Boiler Generator</div>
+              <div class="project-desc">
+                <span data-lang="ru">Автогенератор технических чертежей</span>
+                <span data-lang="en">Auto technical drawing generator</span>
+                <span data-lang="uz">Avtomatik texnik chizma generatori</span>
+              </div>
+              <a
+                class="project-url"
+                href="https://boiler-pcmq.onrender.com"
+                target="_blank"
+                >boiler-pcmq.onrender.com</a
+              >
+            </div>
+
+            <div class="project-card">
+              <div class="project-name">Timoda</div>
+              <div class="project-desc">
+                <span data-lang="ru">Маркетплейс с интеграцией платежей</span>
+                <span data-lang="en">Marketplace with payment integration</span>
+                <span data-lang="uz">To'lov integratsiyali marketplace</span>
+              </div>
+              <span
+                class="project-url"
+                style="color: var(--gold); opacity: 0.8"
+              >
+                <span data-lang="ru">В разработке</span>
+                <span data-lang="en">In development</span>
+                <span data-lang="uz">Ishlab chiqilmoqda</span>
+              </span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- ── FOOTER ── -->
+      <footer class="page-footer">
+        <span class="footer-note">
+          <span data-lang="ru">Рекомендации предоставляются по запросу</span>
+          <span data-lang="en">References available upon request</span>
+          <span data-lang="uz">Tavsiyalar so'rov bo'yicha taqdim etiladi</span>
+        </span>
+        <div class="footer-divider"></div>
+        <span class="footer-note">sanjarweb.uz · 2025</span>
+      </footer>
+    </div>
+
+    <script>
+      const btns = document.querySelectorAll(".lang-btn");
+      const saved =
+        localStorage.getItem("resumeLang") ||
+        localStorage.getItem("selectedLang") ||
+        "en";
+
+      function setLang(lang) {
+        document.body.className = "lang-" + lang;
+        btns.forEach((b) =>
+          b.classList.toggle("active", b.dataset.langBtn === lang),
+        );
+        localStorage.setItem("resumeLang", lang);
+      }
+
+      setLang(saved);
+
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => setLang(btn.dataset.langBtn));
+      });
+    </script>
+  </body>
+</html>

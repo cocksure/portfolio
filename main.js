@@ -323,24 +323,7 @@ function initDownloadResume() {
   if (downloadBtn) {
     downloadBtn.addEventListener("click", (e) => {
       e.preventDefault();
-
-      // Анимация кнопки
-      const originalHTML = downloadBtn.innerHTML;
-      downloadBtn.innerHTML = "⏳ Загрузка...";
-
-      setTimeout(() => {
-        // Здесь будет реальное скачивание файла
-        // const resumeUrl = 'path/to/your/resume.pdf';
-        // window.open(resumeUrl, '_blank');
-
-        // Временно показываем сообщение
-        alert(
-          "Резюме будет доступно для скачивания. Добавьте ссылку на ваш PDF файл в коде!"
-        );
-
-        // Восстанавливаем кнопку
-        downloadBtn.innerHTML = originalHTML;
-      }, 800);
+      window.open("pdf.html", "_blank");
     });
   }
 }
