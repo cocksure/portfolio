@@ -415,7 +415,7 @@ nav.scrolled {
   margin: 0;
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  overflow: clip;
   isolation: isolate;
 }
 
@@ -686,6 +686,7 @@ nav.scrolled {
   width: 400px;
   height: 400px;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .profile-image {
@@ -714,11 +715,10 @@ nav.scrolled {
   inset: -14%;
   border: 1px solid rgba(163, 230, 53, 0.32);
   border-radius: 50%;
-  --orbit-x: 68deg;
-  --orbit-y: 0deg;
-  transform: rotateX(var(--orbit-x)) rotateY(var(--orbit-y)) rotateZ(0deg);
-  animation: orbitSpin 16s linear infinite;
+  transform: rotateX(68deg) rotateY(0deg) rotateZ(0deg);
+  animation: orbitSpinOne 16s linear infinite;
   pointer-events: none;
+  will-change: transform;
 }
 
 .orbit-ring::before {
@@ -736,10 +736,8 @@ nav.scrolled {
 .orbit-ring-two {
   inset: -23%;
   border-color: rgba(249, 115, 22, 0.28);
-  --orbit-x: 60deg;
-  --orbit-y: 18deg;
-  animation-duration: 22s;
-  animation-direction: reverse;
+  transform: rotateX(60deg) rotateY(18deg) rotateZ(0deg);
+  animation: orbitSpinTwo 22s linear infinite reverse;
 }
 
 .orbit-ring-two::before {
@@ -747,9 +745,15 @@ nav.scrolled {
   box-shadow: 0 0 22px rgba(249, 115, 22, 0.85);
 }
 
-@keyframes orbitSpin {
+@keyframes orbitSpinOne {
   to {
-    transform: rotateX(var(--orbit-x)) rotateY(var(--orbit-y)) rotateZ(360deg);
+    transform: rotateX(68deg) rotateY(0deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orbitSpinTwo {
+  to {
+    transform: rotateX(60deg) rotateY(18deg) rotateZ(360deg);
   }
 }
 
@@ -2645,12 +2649,30 @@ img[loading="lazy"].loaded {
 @media (max-width: 768px) {
   /* Отключить тяжёлые непрерывные анимации */
   .profile-image {
-    animation: none !important;
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    animation: morphing 8s ease-in-out infinite;
+  }
+
+  .orbit-ring {
+    animation-duration: 24s;
+  }
+
+  .orbit-ring-two {
+    animation-duration: 34s;
   }
 
   .profile-decoration {
-    animation: none !important;
+    animation: rotateDecorationMobile 10s linear infinite;
+    will-change: transform;
+  }
+
+  .profile-decoration.decoration-two {
+    animation-duration: 14s;
+    animation-delay: -5s;
+    animation-direction: reverse;
+  }
+
+  @keyframes rotateDecorationMobile {
+    to { transform: rotate(360deg); }
   }
 
   .particle {
